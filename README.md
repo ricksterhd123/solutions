@@ -1,4 +1,4 @@
-# Random solutions
+# Solutions
 This repository contains solutions to various programming questions and puzzles.
 
 ## Sources:
