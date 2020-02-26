@@ -18,6 +18,6 @@ int main(){
 
     for (i = 0; i < T; i++)
     {
-        printf("%i\n", arr[i]);
+        printf("%i\n", *(arr + i));
     }
 }
