@@ -2,24 +2,29 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
-
 #define MAX_LENGTH 256
+
+int mod(int a, int b)
+{
+    int r = a % b;
+    return r < 0 ? r + b : r;
+}
 
 int cipherEncrypt(int n)
 {
-    return (n + 3) % 26;
+    return mod((n + 3), 26);
 }
 
 int cipherDecrypt(int n)
 {
-    return (n - 3) % 26;
+    return mod((n - 3), 26);
 }
 
-char* encryptString(char *plaintext, char *ciphertext)
+void encryptString(char *plaintext, char *ciphertext)
 {
-    for (int i = 0; i < strlen(plaintext)-1; i++)
+    for (int i = 0; i < strlen(plaintext); i++)
     {
-        int plainCode = toupper(plaintext[i]) - 65;
+        int plainCode = plaintext[i] - 65;
         if (plainCode >= 0 && plainCode <= 25)
         {
             int cipherCode = cipherEncrypt(plainCode);
@@ -27,43 +32,60 @@ char* encryptString(char *plaintext, char *ciphertext)
         } 
         else
         {
-            ciphertext[i] = ' ';
+            ciphertext[i] = plaintext[i];
         }
     }
 }
 
-char* decryptString(char *ciphertext, char *plaintext)
+void decryptString(char *ciphertext, char *plaintext)
 {
-    for (int i = 0; i < strlen(ciphertext)-1; i++)
+    for (int i = 0; i < strlen(ciphertext); i++)
     {
-        int cipherCode = toupper(ciphertext[i]) - 65;
+        int cipherCode = ciphertext[i] - 65;
+
         if (cipherCode >= 0 && cipherCode <= 25)
         {
             int plainCode = cipherDecrypt(cipherCode);
-            plaintext[i] = cipherCode + 65;
+            plaintext[i] = plainCode + 65;
         } 
         else
         {
-            plaintext[i] = ' ';
+            plaintext[i] = ciphertext[i];
         }
     }
+}
+
+/*
+    Convert lowercase alphabetical characters in a string into uppercase
+    Params:
+    - char *string -> input string
+    - int length -> length of input string
+    - char *upperString -> output string (assume they are the same length as the input string)
+*/
+void stringToUpper(char *string, int length, char *upperString)
+{
+    for (int i = 0; i < length; i++)
+        upperString[i] = toupper(string[i]);
 }
 
 int main()
 {
-    char str[MAX_LENGTH];
-    char ciphertext[MAX_LENGTH];
-    char plaintext[MAX_LENGTH];
+    char *str = calloc(sizeof(char), MAX_LENGTH);
+    char *ciphertext = calloc(sizeof(char), MAX_LENGTH);
+    char *plaintext = calloc(sizeof(char), MAX_LENGTH);
 
     printf("Please enter a string: ");
     fgets(str, MAX_LENGTH, stdin);
-    printf("Plain text: %s\n", str);
-
+    str[strcspn(str, "\n")] = '\0';
+    stringToUpper(str, strlen(str), str);
+    printf("Input text: %s\n", str);
     encryptString(str, ciphertext);
-    printf("Cipher text: %s\n", ciphertext);
     decryptString(ciphertext, plaintext);
-    printf("Plain text decrypted: %s\n", plaintext);
+    printf("=============ENCRYPT==========\n");
+    printf("Cipher text: %s\n", ciphertext);
+    printf("=============DECRYPT==========\n");
+    printf("Plain text: %s\n", plaintext);
+    printf("Comparison: %s", strcmp(str, plaintext) == 0 ? "True" : "False");
 
-    printf("%i", cipherEncrypt(cipherDecrypt(25)));
     return 0;
 }
