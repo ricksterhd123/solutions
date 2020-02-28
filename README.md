@@ -1,6 +1,8 @@
-# Solutions
-This repository contains solutions to various programming questions and puzzles.
-
-## Sources:
-- codegolf
-- euler project
+# Solutions to various programming questions and puzzles.
+## Problem sources:
+- Codegolf
+- Euler project
+- Random ideas I thought would be worth trying
+## Languages I intend to use:
+- C
+- Haskell (I will get around to doing this more often sometime)
