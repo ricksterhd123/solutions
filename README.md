@@ -3,6 +3,3 @@
 - Codegolf
 - Euler project
 - Random ideas I thought would be worth trying
-## Languages I intend to use:
-- C
-- Haskell (I will get around to doing this more often sometime)
