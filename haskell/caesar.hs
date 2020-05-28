@@ -2,30 +2,50 @@
 import Data.Char
 
 plainToCipher :: Char -> Char
-plainToCipher p = chr((rem (ord (toLower p) - (97 + 3)) 26) + 97) 
+plainToCipher p = chr((rem (ord (toLower p) - (97 - 3)) 26) + 97) 
 
 cipherToPlain :: Char -> Char
-cipherToPlain c =  chr ((rem (ord (toLower c) - (97 - 3)) 26) + 97)
+cipherToPlain c =  chr ((rem (ord (toLower c) - (97 + 3)) 26) + 97)
 
 caesarEncrypt :: String -> String
-caesarEncrypt (x:xs) = plainToCipher x : caesarEncrypt xs 
+caesarEncrypt (x:xs)
+    | x == ' '  = x : caesarEncrypt xs
+    | otherwise = plainToCipher x : caesarEncrypt xs
+ 
 caesarEncrypt [] = []
 
 caesarDecrypt :: String -> String
-caesarDecrypt (x:xs) = cipherToPlain x : caesarDecrypt xs
+caesarDecrypt (x:xs)
+    | x == ' '  = x : caesarDecrypt xs
+    | otherwise = cipherToPlain x : caesarDecrypt xs
 caesarDecrypt [] = []
 
--- TODO: learn how to process user input yet.
-caesarEncrypt' :: [IO ()] -> IO ()
-caesarEncrypt' [] = return ()
-caesarEncrypt' str = do caesarEncrypt str
+parseMode :: String -> Int
+parseMode (x:xs)
+    | x == '1' = 1
+    | x == '2' = 2
+    | otherwise = -1 -- invalid mode
 
-main = do 
-    putStrLn "Please enter a string: "
-    plainText <- getLine
-    cipherText <- caesarEncrypt' plainText
-    print cipherText
-    --print "Plain text: " : caesarEncrypt(plainText)
-    -- print "\n"
-    -- print "Cipher text: " : caesarEncrypt(plainText :: String)
-    -- print "\n"
+main = do
+    putStrLn "================================="
+    putStrLn "=         Enter mode            ="
+    putStrLn "================================="
+    putStrLn "=  1. Encrypt                   ="
+    putStrLn "=  2. Decrypt                   ="
+    putStrLn "================================="
+    putStrLn "Please select a mode [1-2]: "
+    txtMode <- getLine
+    let mode = parseMode txtMode
+    if mode == -1
+        then return ()
+    else do
+        putStrLn "$:> "
+        plainText <- getLine
+        if null plainText
+            then return ()
+        else do
+            if mode == 1
+                then putStrLn $ caesarEncrypt plainText
+            else do
+                putStrLn $ caesarDecrypt plainText
+    main
