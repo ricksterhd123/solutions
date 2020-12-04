@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <math.h>
-#include <time.h>
 
 double sum_of_squares(int n)
 {
@@ -16,10 +15,7 @@ int main()
 {
     int n = 100;
     double result = 0;
-    clock_t begin = clock();
     result = pow((n * (n + 1)) / 2, 2) - sum_of_squares(n);
-    clock_t end = clock();
-    printf("Result: %f\n", result);
-    printf("Time taken: %f", (double) (end - begin)/CLOCKS_PER_SEC);
+    printf("Result: %f\n", result);    
     return 0;
 }
