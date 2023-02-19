@@ -1,4 +1,4 @@
-function getCollatzSequence(n) {
+function getCollatzSequenceLength(n) {
     let tn = n;
     let count = 1; // itself first in sequence
 
@@ -19,7 +19,7 @@ function maxCollatzSequence(n) {
     let maxCI = -Infinity;
 
     for (let i = 1; i < n; i++) {
-        const cn = getCollatzSequence(i);
+        const cn = getCollatzSequenceLength(i);
         if (cn > maxCN) {
             maxCN = cn;
             maxCI = i;
