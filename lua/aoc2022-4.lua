@@ -47,7 +47,7 @@ local function decodePair(pairstr)
     return { tonumber(x1), tonumber(y1), tonumber(x2), tonumber(y2) }
 end
 
-function isPairContained(t)
+local function isPairContained(t)
     local size1 = math.abs(t[1] - t[2])
     local size2 = math.abs(t[3] - t[4])
 
@@ -58,7 +58,7 @@ function isPairContained(t)
     return t[1] <= t[3] and t[3] <= t[1] + size1 - size2
 end
 
-function isPairOverlapped(t)
+local function isPairOverlapped(t)
     local size1 = math.abs(t[1] - t[2])
     local size2 = math.abs(t[3] - t[4])
 
