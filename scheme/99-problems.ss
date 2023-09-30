@@ -63,18 +63,26 @@
 ;; p06
 (define is-palindrome
   (lambda (p)
-    (let ((p-length (length p)))
-      (cond ((<= p-length 0)
-             #t)
-            ((<= p-length 1)
-             #t)
-            ((> p-length 1)
-             (and
-              (equal? (car p) (car (reverse (cdr p))))
-              (is-palindrome (cdr (reverse (cdr p))))))))))
+    (or (<= (length p) 1)
+        (and
+         (equal? (car p) (car (reverse (cdr p))))
+         (is-palindrome (cdr (reverse (cdr p))))))))
 
 (expect is-palindrome '((a b c d)) #f "is-palindrome (#1)" "Find out whether a list is a palindrome")
 (expect is-palindrome '((a b b a)) #t "is-palindrome (#2)" "Find out whether a list is a palindrome")
 (expect is-palindrome '((a)) #t "is-palindrome (#3)" "Find out whether a list is a palindrome")
 (expect is-palindrome '(()) #t "is-palindrome (#4)" "Find out whether a list is a palindrome")
+
+;; p07
+(define my-flatten
+  (lambda (x)
+    (if (pair? x)
+        (append (my-flatten (car x)) (my-flatten (cdr x)))
+        (if (null? x) x (list x)))))
+
+(expect my-flatten
+        '(((a) (b) (c) (d (e)) (f k (g (x)))))
+        '(a b c d e f k g x)
+        "my-flatten"
+        "Flatten a nested list structure")
 
