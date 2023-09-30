@@ -133,3 +133,41 @@
 
 (expect pack '((a a a a b c c a a d e e e e)) '((a a a a) (b) (c c) (a a) (d) (e e e e)) "pack" "Pack consecutive duplicates of list elements into sublists.")
 
+;; p10
+(define encode
+  (lambda (lista)
+    (map (lambda (sublist)
+           (list (length sublist) (car sublist))) (pack lista))))
+
+(expect encode '((a a a a b c c a a d e e e e)) '((4 a) (1 b) (2 c) (2 a) (1 d)(4 e)) "encode" "Run-length encoding of a list.")
+
+;; p11
+(define encode-modified
+  (lambda (lista)
+    (map (lambda (sublist) (if (<= (car sublist) 1) (cadr sublist) sublist)) (encode lista))))
+
+(expect encode-modified
+        '((a a a a b c c a a d e e e e)) '((4 a) b (2 c) (2 a) d (4 e)) "encode-modified" "Modified run-length encoding.")
+
+;; p12
+;; helper function which returns a list with repeated atom n times
+;; (repeat 'a 5) => '(a a a a a)
+(define repeat
+  (lambda (a n)
+    (if (<= n 0)
+        '()
+        (cons a (repeat a (- n 1))))))
+
+;; note: this does not support nested lists, e.g. ((a) (b) (c) d d d e e e)
+(define decode
+  (lambda (lista)
+    (my-flatten (map (lambda (sublist)
+           (if (atom? sublist)
+               (list sublist)
+               (repeat (cadr sublist) (car sublist))))
+                     lista))))
+
+(expect decode
+        '((a b c d e e e f g h m))
+        '(a b c d e e e f g h m)
+        "decode" "Decode a run-length encoded list.")
