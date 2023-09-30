@@ -104,6 +104,7 @@
 
 (expect compress '((a a a a b c c a a d e e e e)) '(a b c a d e) "compress" "Eliminate consecutive duplicates of list elements")
 
+;; p09
 ;; Recursively iterate over each item in curr, accumulate sublist if same as last item,
 ;; append sublist if the next item changes.
 ;; if at the end of curr and acc-sublist is not empty, append it to acc and return
