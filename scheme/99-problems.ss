@@ -86,3 +86,21 @@
         "my-flatten"
         "Flatten a nested list structure")
 
+;; p08
+(define compress
+  (lambda (x)
+    (letrec ((compress-iter
+             (lambda (a c last)
+               (if (null? c)
+                   a
+                   (let ((first (car c)))
+                     (compress-iter
+                      (if (equal? first last)
+                          a
+                          (append a (list first)))
+                      (cdr c)
+                      first))))))
+      (compress-iter '() x '()))))
+
+(expect compress '((a a a a b c c a a d e e e e)) '(a b c a d e) "compress" "Eliminate consecutive duplicates of list elements")
+
