@@ -104,3 +104,31 @@
 
 (expect compress '((a a a a b c c a a d e e e e)) '(a b c a d e) "compress" "Eliminate consecutive duplicates of list elements")
 
+;; Recursively iterate over each item in curr, accumulate sublist if same as last item,
+;; append sublist if the next item changes.
+;; if at the end of curr and acc-sublist is not empty, append it to acc and return
+;; otherwise return acc
+
+(define pack
+  (lambda (x)
+    (letrec ((pack-iter
+              (lambda (acc acc-sublist curr last)
+                (if (null? curr)
+                    (if (null? acc-sublist)
+                        acc
+                        (append acc (list acc-sublist)))
+                    (let ((first (car curr))
+                          (rest (cdr curr)))
+                      (if (equal? first last)
+                          (pack-iter acc (cons last acc-sublist) rest last)
+                          (pack-iter
+                           (if (null? acc)
+                               (if (null? acc-sublist) '() (list acc-sublist))
+                               (append acc (list acc-sublist)))
+                           (cons first '())
+                           rest
+                           first)))))))
+      (pack-iter '() '() x '()))))
+
+(expect pack '((a a a a b c c a a d e e e e)) '((a a a a) (b) (c c) (a a) (d) (e e e e)) "pack" "Pack consecutive duplicates of list elements into sublists.")
+
